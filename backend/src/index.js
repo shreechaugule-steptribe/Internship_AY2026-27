@@ -5,6 +5,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 const connectDB = require('./config/db')
+const path = require('path')
 
 const app = express()
 
@@ -35,8 +36,13 @@ app.use('/api/admin',        require('./routes/admin'))
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', ts: new Date() }))
 
-// 404
-app.use((req, res) => res.status(404).json({ message: 'Route not found' }))
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../public')))
+
+// Handle SPA routing (React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
 
 // Global error handler
 app.use((err, req, res, next) => {
