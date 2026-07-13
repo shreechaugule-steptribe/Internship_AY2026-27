@@ -16,7 +16,7 @@ WORKDIR /app/backend
 
 # Copy backend dependencies and install
 COPY backend/package*.json ./
-RUN npm install --production
+RUN npm install --omit=dev --legacy-peer-deps
 
 # Copy backend source code
 COPY backend/ ./
