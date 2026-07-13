@@ -1,0 +1,27 @@
+services:
+  # Backend - Node.js web service
+  - type: web
+    name: zcoer-internship-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: CLIENT_URL
+        value: https://zcoer-internship-frontend.onrender.com
+      # Ensure you manually add MONGO_URI, JWT_SECRET, and CLOUDINARY keys in Render Dashboard
+    rootDir: backend
+
+  # Frontend - Static Site
+  - type: web
+    name: zcoer-internship-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://zcoer-internship-backend.onrender.com/api
+    rootDir: frontend
